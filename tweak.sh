@@ -70,6 +70,10 @@ else
     echo "Skipping VSCode installation."
 fi
 
+# Ask user to Prettify the Gnome Desktop
+read -p "Would you like to make Gnome a bit more normal looking like Windows and OSX? [Y/n] " answer
+if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+
 # Prettify the Gnome Desktop
 gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
 gsettings set org.gnome.desktop.background show-desktop-icons false
@@ -78,4 +82,7 @@ gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
 gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
 gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
 
-# Continue with the rest of your script...
+else
+    echo "Skipping Gnome Prettification."
+fi
+
