@@ -58,6 +58,13 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     install_package "curl" ""
 fi
 
+
+# Ask user to install gnome-tweaks
+read -p "gnome-tweaks allows for some modifications to the desktop schema via Tweaks in the application menue \nWould you like to install gnome-tweaks? " answer
+if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+    install_package "gnome-tweaks" ""
+fi
+
 # Ask user to install Brave browser
 read -p "Would you like to install the Brave browser? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
@@ -156,11 +163,12 @@ read -p "Would you like to make Gnome a bit more normal looking like Windows and
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     # Prettify the Gnome Desktop and add Terminal to dock
     gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
-    gsettings set org.gnome.desktop.background show-desktop-icons false
+    gsettings set org.gnome.shell.extensions.ding show-trash true
     gsettings set org.gnome.nautilus.desktop icon-size 'small'
     gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
     gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
     gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
+    gsettings set org.gnome.shell.extensions.ding show-home false
     add_terminal_to_dock
 else
     echo "Skipping Gnome Prettification."
