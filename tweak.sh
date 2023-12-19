@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Check for sudo privileges
-if [ "$(id -u)" != "0" ]; then
-    echo "This script must be run as root. Please use sudo."
-    exit 1
-fi
-
 # Function to add an app to GNOME dock favorites
 add_to_gnome_dock() {
     local desktop_file=$1
@@ -53,17 +47,16 @@ install_from_repo() {
 
 # Function to add Terminal to the far left of the dock
 add_terminal_to_dock() {
-    current_favorites=$(gsettings get org.gnome.shell favorite-apps)
-    updated_favorites="['org.gnome.Terminal.desktop', ${current_favorites:1:-1}]"
+    local current_favorites=$(gsettings get org.gnome.shell favorite-apps)
+    local updated_favorites="['org.gnome.Terminal.desktop', ${current_favorites:1:-1}]"
     gsettings set org.gnome.shell favorite-apps "$updated_favorites"
 }
 
 # Ask user to install curl
 read -p "Curl is necessary to add the repos and install the packages used by this script. \nWould you like to install curl? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
-    install_package "curl"
+    install_package "curl" ""
 fi
-#!/bin/bash
 
 # Ask user to install Brave browser
 read -p "Would you like to install the Brave browser? [Y/n] " answer
@@ -83,7 +76,7 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
         "/etc/apt/sources.list.d/element-io.list"
 fi
 
-# Ask user to install VSCode
+# Ask user to install Visual Studio Code
 read -p "Would you like to install Visual Studio Code? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     install_from_repo "code" "code.desktop" "/usr/share/keyrings/packages.microsoft.gpg" \
@@ -114,7 +107,6 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
         "/etc/apt/sources.list.d/spotify.list"
 fi
 
-
 # Ask user to Prettify the Gnome Desktop
 read -p "Would you like to make Gnome a bit more normal looking like Windows and OSX? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
@@ -134,7 +126,7 @@ fi
 read -p "Snap is a dogshit way to run applications in Linux, would you like to remove Snap? [y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     echo "Let's take out the trash!"
-    apt-get autoremove --purge snapd
-    apt-mark hold snapd
-    apt-get install gnome-software --no-install-recommends
+    sudo apt-get autoremove --purge snapd
+    sudo apt-mark hold snapd
+    sudo apt-get install gnome-software --no-install-recommends
 fi
