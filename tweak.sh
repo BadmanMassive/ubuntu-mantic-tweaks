@@ -169,6 +169,8 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
     gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
     gsettings set org.gnome.shell.extensions.ding show-home false
+    gsettins set org.gnome.shell.extensions.ding.start-corner 'top-left'
+
     add_terminal_to_dock
 else
     echo "Skipping Gnome Prettification."
