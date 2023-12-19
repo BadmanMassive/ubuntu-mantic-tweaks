@@ -176,6 +176,24 @@ else
     echo "Skipping Gnome Prettification."
 fi
 
+# Ask user to Improve Terminal
+read -p "Would you like to make the Terminal a bit cooler like a cool hacker doing big heckin' hacks? [Y/n] " answer
+if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+    # Get the default profile ID
+    DEFAULT_PROFILE_ID=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
+
+    # Check if the DEFAULT_PROFILE_ID is not empty
+    if [[ -n $DEFAULT_PROFILE_ID ]]; then
+        gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT_PROFILE_ID/ use-theme-colors false
+        gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT_PROFILE_ID/ foreground-color 'rgb(0,255,0)'
+        gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$DEFAULT_PROFILE_ID/ background-color 'rgb(0,0,0)'
+        echo "You're like yer man the robut from the show now boi."
+    else
+        echo "Could not find the default GNOME Terminal profile ID."
+    fi
+fi
+
+
 # Ask user to remove Snap
 read -p "Snap is a dogshit way to run applications in Linux, would you like to remove Snap? [y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
