@@ -59,7 +59,7 @@ add_terminal_to_dock() {
 }
 
 # Ask user to install curl
-read -p "Would you like to install curl? [Y/n] " answer
+read -p "Curl is necessary to add the repos and install the packages used by this script. \nWould you like to install curl? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     install_package "curl"
 fi
