@@ -79,6 +79,9 @@ fi
 # Ask user to install Visual Studio Code
 read -p "Would you like to install Visual Studio Code? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+    # Remove existing GPG key file if it exists
+    sudo rm -f /usr/share/keyrings/packages.microsoft.gpg
+
     # Add the GPG key for Visual Studio Code
     curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/packages.microsoft.gpg
     
@@ -90,6 +93,7 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     sudo apt install -y code
     add_to_gnome_dock "code.desktop"
 fi
+
 
 
 # Ask user to install Mark Text
@@ -130,6 +134,9 @@ fi
 # Ask user to install Spotify
 read -p "Would you like to install Spotify? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+    # Remove existing GPG key file if it exists
+    sudo rm -f /usr/share/keyrings/spotify.gpg
+
     # Add the GPG key for Spotify
     curl -sSL https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor -o /usr/share/keyrings/spotify.gpg
     
@@ -141,6 +148,7 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     sudo apt install -y spotify-client
     add_to_gnome_dock "spotify.desktop"
 fi
+
 
 
 # Ask user to Prettify the Gnome Desktop
