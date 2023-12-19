@@ -12,6 +12,14 @@ install_package() {
     sudo apt install -y $1
 }
 
+# Function to download and install a .deb package
+install_deb_package() {
+    echo "Downloading and installing $1..."
+    wget -O /tmp/$1.deb $2
+    sudo apt install -y /tmp/$1.deb
+    rm -f /tmp/$1.deb
+}
+
 # Function to add a repository and install a package
 install_from_repo() {
     echo "Adding repository for $1..."
@@ -36,24 +44,6 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
         "/etc/apt/sources.list.d/brave-browser-release.list"
 fi
 
-# Ask user to remove Snap
-read -p "Snap is a dogshit way to run applications in Linux, would you like to remove Snap? [y/n] " answer
-case $answer in
-    [Yy]* )
-        echo "Let's take out the trash!"
-        apt-get autoremove --purge snapd
-        apt-mark hold snapd
-        apt-get install gnome-software --no-install-recommends
-        ;;
-    [Nn]* )
-        echo "Keeping for now"
-        ;;
-    * )
-        echo "Please answer yes or no."
-        exit 1
-        ;;
-esac
-
 # Ask user to install VSCode
 read -p "Would you like to install Visual Studio Code? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
@@ -66,23 +56,33 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     # Update package lists and install VSCode
     sudo apt-get update
     sudo apt-get install -y code
-else
-    echo "Skipping VSCode installation."
+fi
+
+# Ask user to install Obsidian
+read -p "Would you like to install Obsidian? [Y/n] " answer
+if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+    install_deb_package "obsidian" "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.4.16/obsidian_1.4.16_amd64.deb"
+fi
+
+# Ask user to remove Snap
+read -p "Snap is a dogshit way to run applications in Linux, would you like to remove Snap? [y/n] " answer
+if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+    echo "Let's take out the trash!"
+    apt-get autoremove --purge snapd
+    apt-mark hold snapd
+    apt-get install gnome-software --no-install-recommends
 fi
 
 # Ask user to Prettify the Gnome Desktop
 read -p "Would you like to make Gnome a bit more normal looking like Windows and OSX? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
-
-# Prettify the Gnome Desktop
-gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
-gsettings set org.gnome.desktop.background show-desktop-icons false
-gsettings set org.gnome.nautilus.desktop icon-size 'small'
-gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
-gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
-gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
-
+    # Prettify the Gnome Desktop
+    gsettings set org.gnome.shell.extensions.dash-to-dock extend-height false
+    gsettings set org.gnome.desktop.background show-desktop-icons false
+    gsettings set org.gnome.nautilus.desktop icon-size 'small'
+    gsettings set org.gnome.shell.extensions.dash-to-dock dock-position 'BOTTOM'
+    gsettings set org.gnome.shell.extensions.dash-to-dock show-mounts false
+    gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
 else
     echo "Skipping Gnome Prettification."
 fi
-
