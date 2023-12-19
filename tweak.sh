@@ -79,11 +79,18 @@ fi
 # Ask user to install Visual Studio Code
 read -p "Would you like to install Visual Studio Code? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
-    install_from_repo "code" "code.desktop" "/usr/share/keyrings/packages.microsoft.gpg" \
-        "https://packages.microsoft.com/keys/microsoft.asc" \
-        "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" \
-        "/etc/apt/sources.list.d/vscode.list"
+    # Add the GPG key for Visual Studio Code
+    curl -sSL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor -o /usr/share/keyrings/packages.microsoft.gpg
+    
+    # Add Visual Studio Code repository
+    echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" | sudo tee /etc/apt/sources.list.d/vscode.list
+    
+    # Update and install Visual Studio Code
+    sudo apt update
+    sudo apt install -y code
+    add_to_gnome_dock "code.desktop"
 fi
+
 
 # Ask user to install Mark Text
 read -p "Would you like to install Mark Text? [Y/n] " answer
@@ -123,11 +130,18 @@ fi
 # Ask user to install Spotify
 read -p "Would you like to install Spotify? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
-    install_from_repo "spotify-client" "spotify.desktop" "/etc/apt/trusted.gpg.d/spotify.gpg" \
-        "https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg" \
-        "deb http://repository.spotify.com stable non-free" \
-        "/etc/apt/sources.list.d/spotify.list"
+    # Add the GPG key for Spotify
+    curl -sSL https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg | sudo gpg --dearmor -o /usr/share/keyrings/spotify.gpg
+    
+    # Add Spotify repository
+    echo "deb [signed-by=/usr/share/keyrings/spotify.gpg] http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+    
+    # Update and install Spotify
+    sudo apt update
+    sudo apt install -y spotify-client
+    add_to_gnome_dock "spotify.desktop"
 fi
+
 
 # Ask user to Prettify the Gnome Desktop
 read -p "Would you like to make Gnome a bit more normal looking like Windows and OSX? [Y/n] " answer
