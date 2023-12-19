@@ -88,15 +88,37 @@ fi
 # Ask user to install Mark Text
 read -p "Would you like to install Mark Text? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
-    marktext_deb_url="https://github.com/marktext/marktext/releases/download/v[VERSION]/marktext-amd64.deb"
-    install_deb_package "marktext" "marktext.desktop" "$marktext_deb_url"
+    latest_release_data=$(curl -s https://api.github.com/repos/marktext/marktext/releases/latest)
+    marktext_deb_url=$(echo "$latest_release_data" | grep "browser_download_url.*deb\"" | cut -d '"' -f 4)
+
+    if [ -n "$marktext_deb_url" ]; then
+        echo "Downloading and installing Mark Text from $marktext_deb_url"
+        wget -O /tmp/marktext.deb "$marktext_deb_url"
+        sudo apt install -y /tmp/marktext.deb
+        rm -f /tmp/marktext.deb
+        add_to_gnome_dock "marktext.desktop"
+    else
+        echo "Failed to find Mark Text .deb download URL."
+    fi
 fi
 
 # Ask user to install Obsidian
 read -p "Would you like to install Obsidian? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
-    install_deb_package "obsidian" "obsidian.desktop" "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.4.16/obsidian_1.4.16_amd64.deb"
+    latest_release_data=$(curl -s https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest)
+    obsidian_deb_url=$(echo "$latest_release_data" | grep "browser_download_url.*deb\"" | cut -d '"' -f 4)
+
+    if [ -n "$obsidian_deb_url" ]; then
+        echo "Downloading and installing Obsidian from $obsidian_deb_url"
+        wget -O /tmp/obsidian.deb "$obsidian_deb_url"
+        sudo apt install -y /tmp/obsidian.deb
+        rm -f /tmp/obsidian.deb
+        add_to_gnome_dock "obsidian.desktop"
+    else
+        echo "Failed to find Obsidian .deb download URL."
+    fi
 fi
+
 
 # Ask user to install Spotify
 read -p "Would you like to install Spotify? [Y/n] " answer
