@@ -58,20 +58,33 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     sudo apt-get install -y code
 fi
 
+# Ask user to install Element Desktop
+read -p "Would you like to install Element Desktop? [Y/n] " answer
+if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+    # Add Element repository and install Element Desktop
+    sudo apt install -y wget apt-transport-https
+    sudo wget -O /usr/share/keyrings/element-io-archive-keyring.gpg https://packages.element.io/debian/element-io-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg] https://packages.element.io/debian/ default main" | sudo tee /etc/apt/sources.list.d/element-io.list
+    sudo apt update
+    sudo apt install -y element-desktop
+fi
+
+# Ask user to install Mark Text
+read -p "Would you like to install Mark Text? [Y/n] " answer
+if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+    # Direct link to the Mark Text .deb package
+    # Note: Update the link below with the current version's URL
+    marktext_deb_url="https://github.com/marktext/marktext/releases/download/v[VERSION]/marktext-amd64.deb"
+    install_deb_package "marktext" "$marktext_deb_url"
+fi
+
 # Ask user to install Obsidian
 read -p "Would you like to install Obsidian? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     install_deb_package "obsidian" "https://github.com/obsidianmd/obsidian-releases/releases/download/v1.4.16/obsidian_1.4.16_amd64.deb"
 fi
 
-# Ask user to remove Snap
-read -p "Snap is a dogshit way to run applications in Linux, would you like to remove Snap? [y/n] " answer
-if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
-    echo "Let's take out the trash!"
-    apt-get autoremove --purge snapd
-    apt-mark hold snapd
-    apt-get install gnome-software --no-install-recommends
-fi
+
 
 # Ask user to Prettify the Gnome Desktop
 read -p "Would you like to make Gnome a bit more normal looking like Windows and OSX? [Y/n] " answer
@@ -85,4 +98,13 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     gsettings set org.gnome.shell.extensions.dash-to-dock show-trash false
 else
     echo "Skipping Gnome Prettification."
+fi
+
+# Ask user to remove Snap
+read -p "Snap is a dogshit way to run applications in Linux, would you like to remove Snap? [y/n] " answer
+if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
+    echo "Let's take out the trash!"
+    apt-get autoremove --purge snapd
+    apt-mark hold snapd
+    apt-get install gnome-software --no-install-recommends
 fi
