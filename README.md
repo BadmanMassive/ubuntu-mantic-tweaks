@@ -39,6 +39,7 @@ Our script specifically targets the removal of Snap due to its limitations:
 By removing Snap, our script aims to enhance system performance and user control over application management.
 
 ## Acknowledgments
+- Thanks to [Jarrow Insights](https://jarrow-insights.co/) cooperative for providing me with a collective hivemind that I draw support and wisdom from!
 - Thanks to the vibrant Mantic Ubuntu community for their ongoing support and contributions.
 - Special thanks to the power of AI: Assisting talentless hacks in crafting well-documented and functioning code!
 
