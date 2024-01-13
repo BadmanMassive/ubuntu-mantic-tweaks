@@ -70,7 +70,7 @@ fi
 
 
 # Ask user to install gnome-tweaks
-read -p "gnome-tweaks allows for some modifications to the desktop schema via Tweaks in the application menue \nWould you like to install gnome-tweaks? " answer
+read -p "gnome-tweaks allows for some modifications to the desktop schema via Tweaks in the application menue \nWould you like to install gnome-tweaks? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     install_package "gnome-tweaks" ""
 fi
