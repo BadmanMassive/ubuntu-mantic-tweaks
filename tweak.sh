@@ -52,6 +52,16 @@ add_terminal_to_dock() {
     gsettings set org.gnome.shell favorite-apps "$updated_favorites"
 }
 
+#Function to remove all the loopback devices that Snap uses to access libraries
+remove_snap_loopbacks() {
+    echo "Removing Snap loopback devices..."
+    for loopdev in $(losetup -l | awk '/snap/ {print $1}'); do
+        sudo losetup -d "$loopdev" && echo "Detached $loopdev"
+    done
+    echo "All Snap loopback devices removed."
+}
+
+
 # Ask user to install curl
 read -p "Curl is necessary to add the repos and install the packages used by this script. \nWould you like to install curl? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
@@ -201,4 +211,6 @@ if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     sudo apt-get autoremove --purge snapd
     sudo apt-mark hold snapd
     sudo apt-get install gnome-software --no-install-recommends
+
+    remove_snap_loopbacks
 fi
