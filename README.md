@@ -1,7 +1,3 @@
-Absolutely! Here's a revised README for your script, incorporating your specific requests about Snap and a special acknowledgment for AI assistance.
-
----
-
 # Mantic Ubuntu Setup Script
 
 ## Overview
