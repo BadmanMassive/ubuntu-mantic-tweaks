@@ -63,14 +63,16 @@ remove_snap_loopbacks() {
 
 
 # Ask user to install curl
-read -p "Curl is necessary to add the repos and install the packages used by this script. \nWould you like to install curl? [Y/n] " answer
+read -p "Curl is necessary to add the repos and install the packages used by this script. 
+Would you like to install curl? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     install_package "curl" ""
 fi
 
 
 # Ask user to install gnome-tweaks
-read -p "gnome-tweaks allows for some modifications to the desktop schema via Tweaks in the application menue \nWould you like to install gnome-tweaks? [Y/n] " answer
+read -p "gnome-tweaks allows for some modifications to the desktop schema via Tweaks in the application menue 
+Would you like to install gnome-tweaks? [Y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     install_package "gnome-tweaks" ""
 fi
@@ -205,7 +207,8 @@ fi
 
 
 # Ask user to remove Snap
-read -p "Snap is a dogshit way to run applications in Linux, would you like to remove Snap and any installed snap packages? [y/n] " answer
+read -p "Snap is a dogshit way to run applications in Linux.
+Would you like to remove Snap and any installed snap packages? [y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     echo "Let's take out the trash!"
 
