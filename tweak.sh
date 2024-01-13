@@ -205,12 +205,27 @@ fi
 
 
 # Ask user to remove Snap
-read -p "Snap is a dogshit way to run applications in Linux, would you like to remove Snap? [y/n] " answer
+read -p "Snap is a dogshit way to run applications in Linux, would you like to remove Snap and any installed snap packages? [y/n] " answer
 if [[ $answer == "" || $answer == "Y" || $answer == "y" ]]; then
     echo "Let's take out the trash!"
-    sudo apt-get autoremove --purge snapd
+
+    # Remove all installed snap packages
+    echo "Removing all installed snap packages..."
+    installed_snaps=$(snap list | awk '/^snapd/ {next} /^Name/ {next} {print $1}')
+    for snap in $installed_snaps; do
+        echo "Removing snap: $snap"
+        sudo snap remove "$snap"
+    done
+
+    # Remove snapd
+    echo "Removing snapd..."
+    sudo apt-get purge snapd -y
     sudo apt-mark hold snapd
+
+    # Install gnome-software as an alternative
     sudo apt-get install gnome-software --no-install-recommends
 
+    # Remove snap loopbacks
     remove_snap_loopbacks
 fi
+
